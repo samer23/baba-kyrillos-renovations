@@ -1,0 +1,31 @@
+export default async function SubmitEmail (event) {
+    event.preventDefault()
+
+    const formData = new FormData(event.target)
+    formData.append("access_key", "")
+
+    const object = Object.fromEntries(formData)
+    const json = JSON.stringify(object)
+
+    const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: json
+    })
+
+    // Parse JSON from the response
+    const data = await res.json()
+
+    if (data.success) {
+        console.log("Success", data)
+        alert("Your message has been sent successfully!")
+    } else {
+        console.error("Error submitting form", data)
+    }
+
+    // Reset the form
+    event.target.reset()
+}
