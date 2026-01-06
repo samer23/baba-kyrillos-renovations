@@ -2,7 +2,7 @@ export default async function SubmitEmail (event) {
     event.preventDefault()
 
     const formData = new FormData(event.target)
-    formData.append("access_key", "")
+    formData.append("access_key", "7f93fc0b-33f6-4b54-ba81-67a98ef1459f")
 
     const object = Object.fromEntries(formData)
     const json = JSON.stringify(object)

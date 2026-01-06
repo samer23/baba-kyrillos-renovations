@@ -156,7 +156,7 @@ export default function FAQ() {
           Call Now
         </a>
         <a
-          href="/contact"
+          href="/contact-us"
           className="flex-1 text-center border border-white font-semibold py-2 rounded-lg"
         >
           Free Estimate
