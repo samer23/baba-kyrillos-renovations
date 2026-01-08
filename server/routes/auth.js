@@ -43,11 +43,17 @@ loginRouter.post('/login', async (req, res) => {
         sameSite: "lax",
         maxAge: 12 * 60 * 60 * 1000,
     })
+
+    res.json({ message: "Login successful" })
 })
 
 // Logout route
 loginRouter.post('/logout', (req, res) => {
-    res.clearCookie("token")
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+    })
     res.json({ message: "Logged out" })
 })
 

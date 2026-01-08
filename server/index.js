@@ -1,6 +1,7 @@
 import express from "express"
 import env from "dotenv"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 // Import routes
 import authRouter from "./routes/auth.js"

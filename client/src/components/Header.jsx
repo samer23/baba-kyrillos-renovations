@@ -30,7 +30,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center space-x-8 font-medium">
             <nav className="flex items-center gap-6">
               {navLinks.map((link) => (
-                <Link to={link.href} className={`transition ${location.pathname === link.href ? "text-yellow-500 border-b-2 border-yellow-500" : "text-white hover:text-yellow-500"}`}>{link.name}
+                <Link key={link.href} to={link.href} className={`transition ${location.pathname === link.href ? "text-yellow-500 border-b-2 border-yellow-500" : "text-white hover:text-yellow-500"}`}>{link.name}
                 </Link>
               ))}
             </nav>
@@ -78,7 +78,7 @@ export default function Header() {
         <div className="bg-white border-t border-gray-200 px-6 py-6 space-y-4 text-center font-medium">
           <nav className="flex flex-col gap-4">
             {navLinks.map((link) => (
-              <Link to={link.href} onClick={() => setIsOpen(false)} className={`block transition ${location.pathname === link.href ? "text-yellow-500" : "text-black hover:text-yellow-500"}`}>
+              <Link key={link.href} to={link.href} onClick={() => setIsOpen(false)} className={`block transition ${location.pathname === link.href ? "text-yellow-500" : "text-black hover:text-yellow-500"}`}>
                   {link.name}
               </Link>
             ))}

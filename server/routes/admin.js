@@ -1,5 +1,8 @@
 import express from 'express'
-import fs from 'fs'
+import multer from 'multer'
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
 // Import the project model
 import Project from '../models/Project.js'
@@ -13,28 +16,35 @@ const adminRouter = express.Router()
 adminRouter.get("/get-projects", authMiddleware, async (req, res) => {
     try {
         const projects = await Project.find()
-        res.json(projects)
+        res.json({ projects: projects, message: "Projects fetched successfully" })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 })
 
-app.post("/add-project", authMiddleware, async (req, res) => {
+adminRouter.post("/add-project", authMiddleware, upload.array("images", 10), async (req, res) => {
     try {
-        // Get the project data from the request body
-        const { progress, title, location, description } = req.body
+      const { progress, title, location, description } = req.body
+      const project = new Project({
+        progress,
+        title,
+        location,
+        description,
+        images: req.files
+      })
 
-        const project = new Project({ progress, title, location, description })
+      await project.save()
 
-        await project.save()
-        res.status(201).json(project)
+      res.status(201).json({ message: "Project added successfully" })
     } catch (error) {
-        res.status(500).json({ message: error.message })
+      res.status(500).json({ message: error.message })
     }
-})
+  }
+)
 
-app.put("/update-project", authMiddleware, async (req, res) => {
+adminRouter.put("/update-project", authMiddleware, upload.array("images", 10), async (req, res) => {
     try {
+        console.log('req.body:', req.body)
         const { _id, progress, title, location, description } = req.body
         await Project.findByIdAndUpdate(_id, { progress, title, location, description })
         res.json({ message: "Project updated successfully" })
@@ -43,9 +53,9 @@ app.put("/update-project", authMiddleware, async (req, res) => {
     }
 })
 
-app.delete("/remove-project", authMiddleware, async (req, res) => {
+adminRouter.delete("/remove-project/:_id", authMiddleware, async (req, res) => {
     // Get the _id of the project to be deleted from the request body
-    const { _id } = req.body
+    const { _id } = req.params
 
     // Delete the project from the database
     await Project.findByIdAndDelete(_id)

@@ -14,6 +14,8 @@ import Services from './pages/Services.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
 import TermsOfService from './pages/TermsOfService.jsx'
 import NotFound from "./pages/NotFound.jsx"
+import AdminLogin from "./pages/AdminLogin.jsx"
+import AdminProjects from "./pages/AdminProjects.jsx"
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/projects" element={<AdminProjects />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

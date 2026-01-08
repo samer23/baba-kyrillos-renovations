@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 
 const authMiddleware = function(req, res, next) {
   const token = req.cookies.token
+  console.log("Auth Middleware - Token:", token)
 
   if (!token) {
     return res.status(401).json({ message: "Not authenticated" })

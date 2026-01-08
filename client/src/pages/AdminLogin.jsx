@@ -1,8 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("")
@@ -20,16 +17,17 @@ export default function AdminLogin() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // important to store JWT cookie
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       })
 
       const data = await res.json()
+      console.log('data:', data)
 
       if (!res.ok) {
         setError(data.message || "Login failed")
       } else {
-        navigate("/admin/projects") // redirect to admin dashboard
+        navigate("/admin/projects")
       }
     } catch (err) {
         console.log(err)
@@ -76,7 +74,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="w-full bg-black text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
