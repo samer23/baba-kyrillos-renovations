@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom"
+import { Routes, Route, BrowserRouter, HashRouter } from "react-router-dom"
 
 // Import components
 import Header from "./components/Header.jsx"
@@ -19,7 +19,7 @@ import AdminProjects from "./pages/AdminProjects.jsx"
 
 function App() {
   return (
-    <BrowserRouter basename="/baba-kyrillos-renovations">
+    <HashRouter basename="/baba-kyrillos-renovations">
       {/* App wrapper */}
       <div className="flex min-h-screen flex-col">
         <Header />
@@ -43,7 +43,7 @@ function App() {
 
         <Footer />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
