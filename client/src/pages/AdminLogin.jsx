@@ -12,6 +12,8 @@ export default function AdminLogin() {
     e.preventDefault()
     setLoading(true)
     setError("")
+    
+    console.log('localStorage.getItem("token"): ', localStorage.getItem("token"))
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
