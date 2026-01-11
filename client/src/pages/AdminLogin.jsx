@@ -12,8 +12,6 @@ export default function AdminLogin() {
     e.preventDefault()
     setLoading(true)
     setError("")
-    
-    console.log('localStorage.getItem("token"): ', localStorage.getItem("token"))
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
@@ -28,6 +26,7 @@ export default function AdminLogin() {
         setError(data.message || "Login failed")
       } else {
         localStorage.setItem("token", data.token)
+        console.log('localStorage.getItem("token"): ', localStorage.getItem("token"))
         navigate("/admin/projects")
       }
     } catch (err) {
