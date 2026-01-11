@@ -1,7 +1,6 @@
 import express from "express"
 import env from "dotenv"
 import cors from "cors"
-import cookieParser from "cookie-parser"
 
 // Import routes
 import authRouter from "./routes/auth.js"
@@ -23,14 +22,12 @@ const app = express()
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 )
 
 // Middleware
 app.use(express.json())
-app.use(cookieParser())
 
 // Connect the routes
 app.use("/uploads", express.static("uploads"))

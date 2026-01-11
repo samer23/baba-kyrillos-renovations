@@ -94,7 +94,9 @@ export default function AdminProjects() {
 
       const res = await fetch(`${API_URL}/admin/${action}`, {
         method: method,
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: formData,
       })
 
@@ -125,7 +127,9 @@ export default function AdminProjects() {
     try {
       const res = await fetch(`${API_URL}/admin/remove-project/${_id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
       })
       const data = await res.json()
       
@@ -203,8 +207,7 @@ export default function AdminProjects() {
   const handleLogout = async () => {
     try {
       await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
+        method: "POST"
       })
       window.location.href = "/admin/login"
     } catch {

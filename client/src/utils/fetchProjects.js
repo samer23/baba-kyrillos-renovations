@@ -15,8 +15,7 @@
 export default async function fetchProjects(API_URL) {
     try {
         const res = await fetch(`${API_URL}/projects/get-projects`, {
-            method: "GET",
-            credentials: "include"
+            method: "GET"
         })
 
         const data = await res.json()

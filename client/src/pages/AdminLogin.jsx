@@ -17,7 +17,6 @@ export default function AdminLogin() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       })
 
@@ -26,6 +25,7 @@ export default function AdminLogin() {
       if (!res.ok) {
         setError(data.message || "Login failed")
       } else {
+        localStorage.setItem("token", data.token)
         navigate("/admin/projects")
       }
     } catch (err) {
