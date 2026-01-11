@@ -19,7 +19,7 @@ import AdminProjects from "./pages/AdminProjects.jsx"
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/baba-kyrillos-renovations">
       {/* App wrapper */}
       <div className="flex min-h-screen flex-col">
         <Header />
