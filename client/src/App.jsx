@@ -19,7 +19,7 @@ import AdminProjects from "./pages/AdminProjects.jsx"
 
 function App() {
   return (
-    <HashRouter basename="/baba-kyrillos-renovations">
+    <HashRouter>
       {/* App wrapper */}
       <div className="flex min-h-screen flex-col">
         <Header />
