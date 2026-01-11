@@ -1,8 +1,7 @@
 import express from 'express'
-import multer from 'multer'
-
-const storage = multer.memoryStorage()
-const upload = multer({ storage })
+import fs from "fs"
+import path from "path"
+import multer from "multer"
 
 // Import the project model
 import Project from '../models/Project.js'
@@ -13,6 +12,42 @@ import authMiddleware from '../middleware/authMiddleware.js'
 // Define the router
 const adminRouter = express.Router()
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/")
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true)
+  } else {
+    cb(new Error("Only images allowed"), false)
+  }
+}
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 20 * 1024 * 1024 } // 10MB
+})
+
+function deleteImageFile(imagePath) {
+  const filePath = path.join(process.cwd(), "uploads", imagePath)
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error("Error deleting image file:", err)
+      } else {
+        console.log("Image file deleted:", filePath)
+      }
+    })
+  }
+}
+
 adminRouter.get("/get-projects", authMiddleware, async (req, res) => {
     try {
         const projects = await Project.find()
@@ -22,15 +57,20 @@ adminRouter.get("/get-projects", authMiddleware, async (req, res) => {
     }
 })
 
-adminRouter.post("/add-project", authMiddleware, upload.array("images", 10), async (req, res) => {
+adminRouter.post("/add-project", authMiddleware, upload.single("image"), async (req, res) => {
     try {
       const { progress, title, location, description } = req.body
+
+      if (!req.file || !progress || !title || !location || !description) {
+        return res.status(400).json({ error: "Missing required fields" })
+      }
+
       const project = new Project({
         progress,
         title,
         location,
         description,
-        images: req.files
+        imagePath: req.file.filename
       })
 
       await project.save()
@@ -42,11 +82,30 @@ adminRouter.post("/add-project", authMiddleware, upload.array("images", 10), asy
   }
 )
 
-adminRouter.put("/update-project", authMiddleware, upload.array("images", 10), async (req, res) => {
+adminRouter.put("/update-project", authMiddleware, upload.single("image"), async (req, res) => {
     try {
-        console.log('req.body:', req.body)
         const { _id, progress, title, location, description } = req.body
-        await Project.findByIdAndUpdate(_id, { progress, title, location, description })
+
+        if (!progress || !title || !location || !description) {
+          return res.status(400).json({ message: "Missing required fields" })
+        }
+
+        // Remove the old image file from the uploads directory
+        const project = await Project.findById(_id)
+        if (!project) {
+          return res.status(404).json({ message: "Project not found" })
+        }
+
+        // Update the project details in the database
+        if (req.file) { 
+          // New image uploaded, update imagePath
+          deleteImageFile(project.imagePath)
+          const imagePath = req.file.filename
+          await Project.findByIdAndUpdate(_id, { progress, title, location, description, imagePath })
+        } else {
+          await Project.findByIdAndUpdate(_id, { progress, title, location, description })
+        }
+        
         res.json({ message: "Project updated successfully" })
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -57,8 +116,19 @@ adminRouter.delete("/remove-project/:_id", authMiddleware, async (req, res) => {
     // Get the _id of the project to be deleted from the request body
     const { _id } = req.params
 
+    // Get the project from the database
+    const project = await Project.findById(_id)
+    if (!project) {
+        return res.status(404).json({ message: "Project not found" })
+    }
+
+    // Delete the image file from the uploads directory
+    deleteImageFile(project.imagePath)
+
     // Delete the project from the database
     await Project.findByIdAndDelete(_id)
+
+    // Return response
     res.json({ message: "Project deleted" })
 })
 

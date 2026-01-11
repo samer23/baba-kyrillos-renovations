@@ -22,7 +22,6 @@ export default function AdminLogin() {
       })
 
       const data = await res.json()
-      console.log('data:', data)
 
       if (!res.ok) {
         setError(data.message || "Login failed")
@@ -30,8 +29,7 @@ export default function AdminLogin() {
         navigate("/admin/projects")
       }
     } catch (err) {
-        console.log(err)
-        setError("Server error. Please try again.")
+        setError("Server error. Please try again. ", err)
     }
 
     setLoading(false)

@@ -20,7 +20,6 @@ export default async function SubmitEmail (event) {
     const data = await res.json()
 
     if (data.success) {
-        console.log("Success", data)
         alert("Your message has been sent successfully!")
     } else {
         console.error("Error submitting form", data)

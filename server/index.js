@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser"
 // Import routes
 import authRouter from "./routes/auth.js"
 import adminRouter from "./routes/admin.js"
+import projectsRouter from "./routes/projects.js"
 
 // Import DB connection
 import connectDB from "./config/db.js"
@@ -35,6 +36,7 @@ app.use(cookieParser())
 app.use("/uploads", express.static("uploads"))
 app.use("/auth", authRouter)
 app.use("/admin", adminRouter)
+app.use("/projects", projectsRouter)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
