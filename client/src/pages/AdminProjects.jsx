@@ -95,7 +95,7 @@ export default function AdminProjects() {
       const res = await fetch(`${API_URL}/admin/${action}`, {
         method: method,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         },
         body: formData,
       })
@@ -206,15 +206,9 @@ export default function AdminProjects() {
   }
 
   // Handle log out
-  const handleLogout = async () => {
-    try {
-      await fetch(`${API_URL}/auth/logout`, {
-        method: "POST"
-      })
-      window.location.href = "/admin/login"
-    } catch {
-      setError("Server error while logging out")
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    window.location.href = "/admin/login"
   }
 
   return (

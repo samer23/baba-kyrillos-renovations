@@ -1,9 +1,9 @@
-export default async function fetchProjects(API_URL) {
+export default async function fetchAdminProjects(API_URL) {
     try {
         const res = await fetch(`${API_URL}/admin/get-projects`, {
             method: "GET",
             headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             }
         })
 

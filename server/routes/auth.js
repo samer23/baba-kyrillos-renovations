@@ -37,22 +37,15 @@ loginRouter.post('/login', async (req, res) => {
         { expiresIn: process.env.JWT_EXPIRES_IN }
     )
 
-    res.cookie("token", token, {
+    res.json({
         message: "Login successful",
-        token: token
+        token
     })
-
-    res.json({ message: "Login successful" })
 })
 
 // Logout route
-loginRouter.post('/logout', (req, res) => {
-    res.clearCookie("token", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-    })
-    res.json({ message: "Logged out" })
+loginRouter.post("/logout", (req, res) => {
+  res.json({ message: "Logged out" })
 })
 
 export default loginRouter
