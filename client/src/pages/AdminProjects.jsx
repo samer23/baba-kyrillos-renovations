@@ -208,7 +208,7 @@ export default function AdminProjects() {
   // Handle log out
   const handleLogout = () => {
     localStorage.removeItem("token")
-    window.location.href = "/admin/login"
+    window.location.href = "/baba-kyrillos-renovations/#/admin/login"
   }
 
   return (
