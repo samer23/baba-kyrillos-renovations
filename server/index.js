@@ -39,5 +39,4 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
     // Server running message
     console.log(`Server running on http://localhost:${PORT}`)
-    console.log("CORS origin:", process.env.CLIENT_URL)
 })

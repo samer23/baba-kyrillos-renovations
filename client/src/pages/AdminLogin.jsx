@@ -26,7 +26,6 @@ export default function AdminLogin() {
         setError(data.message || "Login failed")
       } else {
         localStorage.setItem("token", data.token)
-        console.log('localStorage.getItem("token"): ', localStorage.getItem("token"))
         navigate("/admin/projects")
       }
     } catch (err) {

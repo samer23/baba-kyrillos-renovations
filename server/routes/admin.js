@@ -32,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 20 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 })
 
 function deleteImageFile(imagePath) {
@@ -57,21 +57,15 @@ adminRouter.get("/get-projects", authMiddleware, async (req, res) => {
     }
 })
 
-adminRouter.post("/add-project", authMiddleware, upload.single("image"), async (req, res) => {
+adminRouter.post("/add-project", authMiddleware, (req, res, next) => upload.single("image")(req, res, next), async (req, res) => {
     try {
       const { progress, title, location, description } = req.body
 
       if (!req.file || !progress || !title || !location || !description) {
-        return res.status(400).json({ error: "Missing required fields" })
+        return res.status(400).json({ message: "Missing required fields" })
       }
 
-      const project = new Project({
-        progress,
-        title,
-        location,
-        description,
-        imagePath: req.file.filename
-      })
+      const project = new Project({ progress, title, location, description, imagePath: req.file.filename })
 
       await project.save()
 
@@ -113,6 +107,7 @@ adminRouter.put("/update-project", authMiddleware, upload.single("image"), async
 })
 
 adminRouter.delete("/remove-project/:_id", authMiddleware, async (req, res) => {
+  try {
     // Get the _id of the project to be deleted from the request body
     const { _id } = req.params
 
@@ -130,6 +125,9 @@ adminRouter.delete("/remove-project/:_id", authMiddleware, async (req, res) => {
 
     // Return response
     res.json({ message: "Project deleted" })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 })
 
 export default adminRouter

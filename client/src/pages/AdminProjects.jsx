@@ -145,9 +145,6 @@ export default function AdminProjects() {
 
   // Handle project editing
   const handleEdit = (_id) => {
-
-    console.log('localStorage.getItem("token"): ', localStorage.getItem("token"))
-
     // If already in edit mode for the same project, reset the form
     if (_id === null) {
       // Reset the form fields
