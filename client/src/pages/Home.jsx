@@ -1,9 +1,42 @@
+import { useEffect, useState } from "react"
+
 import KitchenImage from "../assets/kitchen.jpg"
-import BathroomImage from "../assets/bathroom.jpg"
+import BathroomImage from "../assets/bathroom_improved.png"
 import BasementImage from "../assets/basement.jpg"
 import AdditionImage from "../assets/addition.jpg"
 
 export default function Home() {
+  const heroImages = [
+    {
+      src: KitchenImage,
+      alt: "Renovated kitchen",
+    },
+    {
+      src: BathroomImage,
+      alt: "Modern bathroom renovation",
+    },
+    {
+      src: BasementImage,
+      alt: "Finished basement",
+    },
+    {
+      src: AdditionImage,
+      alt: "Home addition project",
+    },
+  ]
+
+  const [currentImage, setCurrentImage] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) =>
+        prev === heroImages.length - 1 ? 0 : prev + 1
+      )
+    }, 4000) // change every 4 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   const services = [
     {
       title: "Kitchen Renovations",
@@ -60,12 +93,25 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className="md:w-1/2 mt-12 md:mt-0 md:ml-6">
+          <div className="md:w-5/12 md:ml-8 lg:ml-12 relative overflow-hidden rounded-xl shadow-lg w-full h-64 sm:h-56 md:h-64 lg:h-72 xl:h-80 mt-10 sm:mt-6 md:mt-0">
             <img
-              src={KitchenImage}
-              alt="Renovated kitchen"
-              className="rounded-xl shadow-lg w-full h-60 sm:h-72 md:h-auto object-cover"
+              key={currentImage}
+              src={heroImages[currentImage].src}
+              alt={heroImages[currentImage].alt}
+              className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
             />
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {heroImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImage(index)}
+                  className={`w-2.5 h-2.5 rounded-full transition ${
+                    currentImage === index ? "bg-yellow-500" : "bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import CEOImage from "../assets/ceo.jpg"
+import CEOImage from "../assets/ceo_improved.png"
 
 export default function AboutUs() {
   return (
@@ -20,7 +20,7 @@ export default function AboutUs() {
         </h2>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>Fully licensed and insured professional general contractor in Ontario.</li>
-          <li>Decades of experience delivering high-quality renovations for Toronto and GTA homeowners.</li>
+          <li>7+ years of experience delivering high-quality renovations for Toronto and GTA homeowners.</li>
           <li>Transparent pricing, clear timelines, and professional project management.</li>
           <li>Commitment to craftsmanship, safety, and attention to detail.</li>
           <li>Emergency renovation services for urgent situations.</li>
