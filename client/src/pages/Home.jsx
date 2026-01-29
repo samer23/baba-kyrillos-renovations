@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 
 import KitchenImage from "../assets/kitchen.jpg"
 import BathroomImage from "../assets/bathroom_improved.png"
-import BasementImage from "../assets/basement.jpg"
-import AdditionImage from "../assets/addition.jpg"
+import BasementImage from "../assets/basement_improved.png"
+import AdditionImage from "../assets/addition_improved.png"
 
 export default function Home() {
   const heroImages = [
