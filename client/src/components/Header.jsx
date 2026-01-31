@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useLocation, Link } from "react-router-dom"
 
-import logo from '../assets/logo.png'
+import logo from '../assets/logo_cropped.png'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,7 +23,7 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Solnik & Solnik" className="h-32 sm:h-36 md:h-44 lg:h-52 xl:h-50 w-auto object-contain mt-2"/>
+            <img src={logo} alt="Baba Kyrillos Renovations" className="block h-16 sm:h-20 md:h-24 lg:h-20 w-auto object-contain"/>
           </Link>
 
           {/* Desktop Navigation */}

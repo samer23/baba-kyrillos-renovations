@@ -127,16 +127,10 @@ export default function FAQ() {
             Serving Toronto & the GTA
           </h2>
           <p className="text-gray-300 mb-6">
-            Request a free renovation estimate or contact us for emergency
+            Contact us for a free renovation estimate or emergency
             repairs.
           </p>
           <div className="flex justify-center gap-4">
-            <a
-              href="/contact-us"
-              className="bg-white text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition"
-            >
-              Request a Free Estimate
-            </a>
             <a
               href="tel:6475755272"
               className="border border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition"
@@ -154,12 +148,6 @@ export default function FAQ() {
           className="flex-1 text-center bg-white text-gray-900 font-semibold py-2 rounded-lg"
         >
           Call Now
-        </a>
-        <a
-          href="/contact-us"
-          className="flex-1 text-center border border-white font-semibold py-2 rounded-lg"
-        >
-          Free Estimate
         </a>
       </div>
     </>
