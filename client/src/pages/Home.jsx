@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 import KitchenImage from "../assets/kitchen.jpg"
 import BathroomImage from "../assets/bathroom_improved.png"
@@ -79,12 +80,7 @@ export default function Home() {
               to quality and integrity.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <a
-                href="/contact-us"
-                className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-400 transition"
-              >
-                Request a Free Estimate
-              </a>
+              <Link to="/contact-us" className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-400 transition">Request a Free Estimate</Link>
               <a
                 href="tel:6475755272"
                 className="border border-yellow-500 text-yellow-500 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-500 hover:text-gray-900 transition"
@@ -143,12 +139,7 @@ export default function Home() {
                   {service.title}
                 </h3>
                 <p className="text-gray-700">{service.description}</p>
-                <a
-                  href="/contact-us"
-                  className="inline-block text-yellow-500 font-semibold hover:underline"
-                >
-                  Request a Free Estimate
-                </a>
+                <Link to="/contact-us" className="inline-block text-yellow-500 font-semibold hover:underline">Request a Free Estimate</Link>
               </div>
             </div>
           ))}
