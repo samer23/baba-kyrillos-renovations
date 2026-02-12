@@ -13,6 +13,12 @@ import authMiddleware from '../middleware/authMiddleware.js'
 // Define the router
 const adminRouter = express.Router()
 
+const uploadDir = path.join(process.cwd(), "uploads")
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true })
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/")
@@ -99,7 +105,11 @@ adminRouter.post("/add-project", authMiddleware, (req, res, next) => upload.sing
       const ext = path.extname(req.file.filename).toLowerCase()
       if (ext === ".heic" || ext === ".heif") {
         const fullPath = path.join(process.cwd(), "uploads", req.file.filename)
-        imagePath = await convertHeicToJpg(fullPath)
+        try {
+          imagePath = await convertHeicToJpg(fullPath)
+        } catch (err) {
+          console.error("HEIC conversion failed:", err)
+        }
       }
 
       const project = new Project({ progress, title, location, description, imagePath })
@@ -108,6 +118,7 @@ adminRouter.post("/add-project", authMiddleware, (req, res, next) => upload.sing
 
       res.status(201).json({ message: "Project added successfully" })
     } catch (error) {
+      console.error("ADD PROJECT ERROR:", error)
       res.status(500).json({ message: error.message })
     }
   }
