@@ -2,6 +2,7 @@ import express from 'express'
 import fs from "fs"
 import path from "path"
 import multer from "multer"
+import convert from "heic-convert";
 
 // Import the project model
 import Project from '../models/Project.js'
@@ -21,11 +22,38 @@ const storage = multer.diskStorage({
   }
 })
 
+// Define the allowed extebsnsions for image uploads
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]
+
+async function convertHeicToJpg(filePath) {
+  try {
+    // convert
+    const inputBuffer = fs.readFileSync(filePath);
+
+    const outputBuffer = await convert({
+      buffer: inputBuffer,
+      format: "JPEG",
+      quality: 0.9,
+    });
+
+    const newPath = filePath.replace(/\.(heic|heif)$/i, ".jpg");
+
+    fs.writeFileSync(newPath, outputBuffer);
+    fs.unlinkSync(filePath); // delete original HEIC
+
+    return path.basename(newPath); // return filename only
+  } catch (err) {
+    console.error("Conversion failed:", err);
+  }
+}
+
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/")) {
-    cb(null, true)
+  const ext = path.extname(file.originalname).toLowerCase();
+
+  if (file.mimetype.startsWith("image/") || allowedExtensions.includes(ext)) {
+    cb(null, true);
   } else {
-    cb(new Error("Only images allowed"), false)
+    cb(new Error("Only images allowed"), false);
   }
 }
 
@@ -65,7 +93,16 @@ adminRouter.post("/add-project", authMiddleware, (req, res, next) => upload.sing
         return res.status(400).json({ message: "Missing required fields" })
       }
 
-      const project = new Project({ progress, title, location, description, imagePath: req.file.filename })
+      let imagePath = req.file.filename
+
+      // convert if heic/heif
+      const ext = path.extname(req.file.filename).toLowerCase()
+      if (ext === ".heic" || ext === ".heif") {
+        const fullPath = path.join(process.cwd(), "uploads", req.file.filename)
+        imagePath = await convertHeicToJpg(fullPath)
+      }
+
+      const project = new Project({ progress, title, location, description, imagePath })
 
       await project.save()
 
@@ -93,9 +130,17 @@ adminRouter.put("/update-project", authMiddleware, upload.single("image"), async
         // Update the project details in the database
         if (req.file) { 
           // New image uploaded, update imagePath
-          deleteImageFile(project.imagePath)
-          const imagePath = req.file.filename
-          await Project.findByIdAndUpdate(_id, { progress, title, location, description, imagePath })
+          deleteImageFile(project.imagePath);
+
+          let imagePath = req.file.filename;
+
+          const ext = path.extname(req.file.filename).toLowerCase();
+          if (ext === ".heic" || ext === ".heif") {
+            const fullPath = path.join(process.cwd(), "uploads", req.file.filename);
+            imagePath = await convertHeicToJpg(fullPath);
+          }
+
+          await Project.findByIdAndUpdate(_id, { progress, title, location, description, imagePath });
         } else {
           await Project.findByIdAndUpdate(_id, { progress, title, location, description })
         }

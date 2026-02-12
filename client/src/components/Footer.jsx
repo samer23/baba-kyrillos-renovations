@@ -49,6 +49,7 @@ export default function Footer() {
           {/* Bottom */}
           <div className="pt-6 text-center text-sm text-gray-500">
             © {new Date().getFullYear()} Baba Kyrillos Renovations Inc. All rights reserved.
+            Website by <a href="https://www.linkedin.com/in/samerharten/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-yellow-500 transition">Samer Harten</a>.
           </div>
         </div>
       </div>

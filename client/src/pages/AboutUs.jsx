@@ -1,4 +1,4 @@
-import CEOImage from "../assets/ceo_improved.png"
+import CEOImage from "../assets/ceo.jpg"
 
 export default function AboutUs() {
   return (
