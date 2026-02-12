@@ -5,6 +5,7 @@ import fetchAdminProjects from "../utils/fetchAdminprojects"
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState([])
+  const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [title, setTitle] = useState("")
@@ -67,6 +68,9 @@ export default function AdminProjects() {
     formData.append("image", image)
 
     try {
+      // Turn on the loading spinner
+      setSubmitting(true)
+
       // Create a variable to hold the action type
       let action = ""
       let method = "POST"
@@ -117,6 +121,8 @@ export default function AdminProjects() {
       }
     } catch {
       setError("Server error while adding project")
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -233,7 +239,12 @@ export default function AdminProjects() {
           {editMode && <p className="text-sm text-gray-600 mb-2">If not updating project image, leave the "Choose Files" section blank</p>}
           {!editMode && <input type="file" ref={fileInputRef} multiple onChange={(e) => setImage(e.target.files[0])} className="w-full" required/>}
           {editMode && <input type="file" ref={fileInputRef} multiple onChange={(e) => setImage(e.target.files[0])} className="w-full"/>}
-          <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">{AddProject}</button>
+          <button type="submit" disabled={submitting} className={`flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-white transition   ${submitting ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} `}>
+            {submitting && (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            )}
+            {submitting ? "Processing..." : AddProject}
+          </button>
         </form>
 
         {/* Projects List */}
@@ -263,8 +274,8 @@ export default function AdminProjects() {
 
                   {/* Actions */}
                   <div className="flex gap-2 mt-4">
-                    <button onClick={() => handleEdit(project._id)} className={`${disableEdit ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"} flex-1 text-white text-sm py-2 rounded-lg transition`} disabled={disableEdit}>Edit</button>
-                    <button onClick={() => handleDelete(project._id)} className={`${disableEdit ? "bg-gray-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"} flex-1 text-white text-sm py-2 rounded-lg transition`} disabled={disableEdit}>Delete</button>
+                    <button onClick={() => handleEdit(project._id)} className={`${disableEdit ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"} flex-1 text-white text-sm py-2 rounded-lg transition`} disabled={disableEdit || submitting}>Edit</button>
+                    <button onClick={() => handleDelete(project._id)} className={`${disableEdit ? "bg-gray-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"} flex-1 text-white text-sm py-2 rounded-lg transition`} disabled={disableEdit || submitting}>Delete</button>
                   </div>
                 </div>
               </div>
