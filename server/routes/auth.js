@@ -13,8 +13,6 @@ loginRouter.post('/login', async (req, res) => {
     
     // Get the email and password from the request body
     const { email, password } = req.body
-    console.log("email: ", email)
-    console.log("password: ", password)
 
     // Check if the email and password are provided
     if (!email || !password) {
